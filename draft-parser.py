@@ -25,11 +25,30 @@ def main():
 
 	print("Finished parsing all drafts")
 
-	# Begin any sort of analysis
+	# Find adps for every player
+	player_adp = {}
+
 	for draft in drafts:
-		print(num_of_positions_taken(draft, "RB", 5))
-		print(num_of_positions_taken(draft, "WR", 5))
-		print(get_team_for_pick_num(draft, get_draft_pick_nums(8)))
+		for pick in draft:
+			player = pick[3]
+			if player in player_adp:
+				player_pick_nums = player_adp[player]
+				player_pick_nums.append(pick[0])
+			else:
+				player_pick_nums = [pick[0]]
+				player_adp[player] = player_pick_nums
+
+	all_players = player_adp.keys()
+	for player in all_players:
+		player_picks = player_adp[player]
+		adp_sum = sum(int(x) for x in player_picks)
+		print(player + " - " + str(round(adp_sum / len(drafts), 1)))
+
+
+def get_pick_num_by_player(picks, player):
+	for pick in picks:
+		if player in pick[3]:
+			return pick
 
 def get_draft_pick_nums(pick_num):
 	draft_pick_nums = []

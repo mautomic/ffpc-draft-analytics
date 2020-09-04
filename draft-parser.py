@@ -1,6 +1,8 @@
 import csv
 import os
+import seaborn as sns
 import pandas as pd
+import matplotlib.pyplot as plt
 
 def clean_data(picks):
     cleansed_picks = []
@@ -112,3 +114,7 @@ for adp in all_adps_sorted:
     player_picks = [int(x) for x in player_picks]
     for pick in player_picks:
         df = df.append({'Player': player, 'Pick': pick}, ignore_index=True)
+
+boxplot = sns.catplot(x="Pick", y="Player", kind="box", data=df, orient='h', height=12, aspect=11.7/8.27);
+boxplot.set(xticks=[i for i in range(int(min(df['Pick'])), int(max(df['Pick'])) + 1, 10)])
+plt.show()
